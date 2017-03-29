@@ -27,38 +27,7 @@ public class MainServer extends AbstractVerticle {
 
     @Override
     public void start() throws Exception {
-
-
-        WorkerExecutor workerExecutor = vertx.createSharedWorkerExecutor("work");
-        workerExecutor.executeBlocking(future ->{
-            try {
-                Thread.sleep(10000);
-                future.complete("OK1");
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-                    try {
-                        Thread.sleep(10000);
-                        future.complete("Ooooo");
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    try {
-                        Thread.sleep(10000);
-                        future.complete("**-**-**");
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-        },
-        false
-        ,res -> {
-            System.out.println("完成了： " + res.result());
-        });
-
-        EventBus eb = vertx.eventBus();
-        eb.consumer(StaticData.PUBLISHADDRESS, mm -> {
-            System.out.println("接收到了消息：" + mm.body());
-        });
-        eb.publish(StaticData.PUBLISHADDRESS, "启动成功");
+        EventBus eventBus = vertx.eventBus();
+        Future<Integer> future = Future.future();
     }
 }
